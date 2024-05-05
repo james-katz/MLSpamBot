@@ -25,10 +25,14 @@ classifier = SpamClassifier("dataset/test.csv")
 
 # Global variables
 config = None
-allowed_roles = []
+allowed_roles = [1047207426723692584, 1046955202336526377, 1073672163313332224]
 
 @bot.command()
 async def ham(ctx, arg:str):
+    if not is_allowed(ctx.message.author):
+        await ctx.message.reply("Sorry, you don't have permission to run this command.")    
+        return
+    
     if arg and arg.isnumeric():
         chat_history = None
         try:
@@ -48,6 +52,10 @@ async def ham(ctx, arg:str):
 
 @bot.command()
 async def spam(ctx):
+    if not is_allowed(ctx.message.author):
+        await ctx.message.reply("Sorry, you don't have permission to run this command.")    
+        return
+    
     ref_msg = ctx.message.reference
     if ref_msg:
         try:
@@ -80,6 +88,10 @@ async def accuracy(ctx):
 
 @bot.command()
 async def mode(ctx, arg=None):
+    if not is_allowed(ctx.message.author):
+        await ctx.message.reply("Sorry, you don't have permission to run this command.")    
+        return
+    
     if not arg:
         mode = get_mode()
         await ctx.message.reply(
@@ -134,6 +146,16 @@ def load_config():
             config = yaml.safe_load(yamlfile)
     except FileNotFoundError:
         change_mode('passive')
+
+# Check if user is allowed to run commands
+def is_allowed(user):
+    allowed = False
+    for role in user.roles:
+        if role in allowed_roles:
+            allowed = True
+            break
+    
+    return allowed
 
 # Check current mode of operation
 def get_mode():

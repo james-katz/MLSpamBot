@@ -102,7 +102,7 @@ class SpamClassifier:
             - float -- Accuracy of the model
         '''
          # Train-Test Split        
-        _, X_test, _, y_test = train_test_split(self.messages['message'].astype('str'), self.messages['spam'].astype('float'), test_size=0.2)
+        X_train, X_test, y_train, y_test = train_test_split(self.messages['message'].astype('str'), self.messages['spam'].astype('float'), test_size=0.2)
         
         # Vectorization using TfidfVectorizer
         X_test_transformed = self.vectorizer.transform(X_test)

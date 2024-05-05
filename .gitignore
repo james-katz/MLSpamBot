@@ -1,3 +1,4 @@
 checkpoints/*.joblib
 dataset/*.csv
 .env
+config.yaml
