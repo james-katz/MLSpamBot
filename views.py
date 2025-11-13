@@ -1,8 +1,9 @@
 import discord
 from datetime import datetime
+from typing import Optional
 
 class SpamOrHamView(discord.ui.View):
-    def __init__(self, *, timeout: float | None = 30):
+    def __init__(self, *, timeout: Optional[float] = 30):
         super().__init__(timeout=timeout)
         self.participants = []
         self.spam_votes = 0
@@ -50,4 +51,3 @@ class SpamOrHamView(discord.ui.View):
         self.participants.append(interaction.user.id)
 
         await interaction.response.send_message("Thanks for your vote! You voted for: HAM", ephemeral=True)
-
