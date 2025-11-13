@@ -95,20 +95,27 @@ class SpamClassifier:
 
     def get_accuracy(self):
         '''
-            Get the model accuracy.
-            ### Parameters:
-            - None
-            ### Returns:
-            - float -- Accuracy of the model
+            Get the model accuracy using a fresh train/test split so the score
+            reflects how the current dataset performs when refitted.
         '''
          # Train-Test Split        
-        X_train, X_test, y_train, y_test = train_test_split(self.messages['message'].astype('str'), self.messages['spam'].astype('float'), test_size=0.2)
+        X_train, X_test, y_train, y_test = train_test_split(
+            self.messages['message'].astype('str'),
+            self.messages['spam'].astype('float'),
+            test_size=0.2
+        )
         
         # Vectorization using TfidfVectorizer
-        X_test_transformed = self.vectorizer.transform(X_test)
+        temp_vectorizer = TfidfVectorizer(lowercase=True)
+        X_train_transformed = temp_vectorizer.fit_transform(X_train)
+        X_test_transformed = temp_vectorizer.transform(X_test)
+
+        # Train a temporary model for evaluation
+        temp_model = MultinomialNB()
+        temp_model.fit(X_train_transformed, y_train)
 
         # Make predictions on test data
-        y_pred = self.model.predict(X_test_transformed)
+        y_pred = temp_model.predict(X_test_transformed)
 
         # Calculate accuracy
         accuracy = accuracy_score(y_test, y_pred)

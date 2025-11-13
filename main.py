@@ -111,7 +111,7 @@ async def mode(ctx, arg=None):
 async def spy_messages(message):
     mode = get_mode()
 
-    if message.author == bot.user or mode == 'passive' or message.channel.id != 1166416705069789246:
+    if message.author == bot.user or mode == 'passive':
         return
     
     sanitized_msg = message.content.replace('\n', ' ')
@@ -173,6 +173,7 @@ def change_mode(_mode):
         - learn - Try to do message classification, and ask real users for deedback
     '''
     if _mode in ['passive', 'active', 'learn']:
+        global config
         config['BotSettings']['mode'] = _mode
 
         with open('config.yaml', 'w') as yamlfile:
