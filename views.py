@@ -20,6 +20,8 @@ class SpamOrHamView(discord.ui.View):
         
         if len(self.participants) == 0:
             myEmbed = discord.Embed(color=0xff0000, title="Unable to learn", description="According to my machine learning model, this message looks rather sus. But I haven't received any human feedback to confirm, so I couldn't learn and improve my model ... may next time.", timestamp=datetime.now())
+        elif len(self.participants) == 1 and self.ham_votes == 1:
+            myEmbed = discord.Embed(color=0x2596be, title="Unable to learn", description="According to my machine learning model, this message looks rather sus. But there was only one vote, since it could be a vote from the original poster, I'll not consider this feedback.", timestamp=datetime.now())
         elif tie:
             myEmbed = discord.Embed(color=0x2596be, title="Unable to learn", description="According to my machine learning model, this message looks rather sus. But there was a tie in the feedback fromm users, so I couldn't learn and improve my model ... may next time.", timestamp=datetime.now())
         else:

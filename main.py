@@ -151,7 +151,7 @@ def load_config():
 def is_allowed(user):
     allowed = False
     for role in user.roles:
-        if role in allowed_roles:
+        if role.id in allowed_roles:
             allowed = True
             break
     
